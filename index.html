@@ -2,25 +2,29 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Black Jack Game | by A. Priadko</title>
     <link rel="stylesheet" type="text/css" media="screen" href="./source/css/style.css">
     <script src="https://code.jquery.com/jquery-1.x-git.min.js"></script>
 </head>
 <body>
-    <div class="human board">
-        <div class="controls">
-            <a href="#" class="click">Click</a>
-            <a href="#" class="restart">Restart</a>
-            <a href="#" class="stop">Stop</a>
-        </div>
-        <div class="status">
-            Player: <span class="score">0</span>
+    <div class="boardContainer">
+        <div class="human board">
+            <div class="controls">
+                <a class="click btn btn-green">More</a>
+                <a class="restart btn btn-grey">Restart</a>
+                <a class="stop btn btn-red">Stop</a>
+            </div>
+            <div class="status">
+                Player: <span class="score">0</span>
+            </div>
         </div>
     </div>
-    <div class="computer board">
-        <div class="status">
-            Computer: <span class="score">0</span>
+
+    <div class="boardContainer">
+        <div class="computer board">
+            <div class="status">
+                Dealer: <span class="score">0</span>
+            </div>
         </div>
     </div>
 

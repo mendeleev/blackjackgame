@@ -1,6 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,700);
 * {font-family: 'Yanone Kaffeesatz', sans-serif;}
 
+body {
+    margin:0;
+    padding:0;
+    background: #ccc;
+}
+
 .card {
     width:120px;
     height:170px;
@@ -14,6 +20,37 @@
     box-shadow:1px 3px 5px #ccc;
     float:left;
     margin:5px;
+}
+
+.btn {
+    cursor: pointer;
+    padding: 10px;
+    border: 3px solid #555555;
+    border-radius: 5px;
+    margin: 0 2px;
+}
+
+.btn-green {
+    color:white;
+    background: green;
+    border-color: green;
+}
+
+.btn-grey {
+    color:white;
+    background: grey;
+    border-color: grey;
+}
+
+.btn-red {
+    color: white;
+    background: red;
+    border-color: red;
+}
+
+.controls {
+    float: right;
+    margin: 30px 30px 30px 0;
 }
 
 .red {
@@ -55,8 +92,8 @@
 
 .board {
     width:100%;
-    background:#ccc;
     height:220px;
+    padding: 20px;
 }
 
 .human {
