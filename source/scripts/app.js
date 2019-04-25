@@ -26,6 +26,7 @@
     Card.prototype = new Suit();
 
     var gameInit = function() {
+        var $msg = $('.message');
         suits.push(new Suit('spades', 'black', '&spades;'));
         suits.push(new Suit('hearts', 'red', '&hearts;'));
         suits.push(new Suit('clubs', 'black', '&clubs;'));
@@ -37,6 +38,8 @@
         step('computer');
         step('human');
 
+        $msg.addClass('hide');
+
         $('.click').click(function() {
             step('human');
         });
@@ -47,15 +50,19 @@
             cpu();
         });
 
-        $('.restart').click(function() {
-            restart();
+        $('.restart').click(restart);
+
+        $(document.body).on('showMessage', function(e, isWinner) {
+            $msg.removeClass('hide');
+            $msg.find('p').text(isWinner ? 'You Won!' : 'You Loose!');
         });
     }
 
-    var restart = function() {
+    function restart() {
         for(var el in result) {
             result[el] = 0;
         }
+        $('.message').addClass('hide');
         $('body').find('.card').remove();
         $('.score').text(0);
         $('.click').show();
@@ -67,33 +74,41 @@
         step('human');
     }
 
-    var makeCards = function(suits) {
+    function makeCards(suits) {
         var cards = [];
         var card = null;
-        for(var el in suits) {
+
+        suits.forEach(function(suite) {
             for(var i = 2; i <= 14; i++) {
-                card = new Card(i.toString(), i, i, suits[el]);
-                if(i === 11) {
-                    card.name = 'j';
-                    card.points = 10;
-                } else if(i === 12) {
-                    card.name = 'd';
-                    card.points = 10;
-                } else if(i === 13) {
-                    card.name = 'k';
-                    card.points = 10;
-                } else if(i === 14) {
-                    card.name = 'a';
-                    card.points = 11;
+                card = new Card(i.toString(), i, i, suite);
+
+                switch (i) {
+                    case 11:
+                        card.name = 'j';
+                        card.points = 10;
+                        break;
+                    case 12:
+                        card.name = 'd';
+                        card.points = 10;
+                        break;
+                    case 13:
+                        card.name = 'k';
+                        card.points = 10;
+                        break;
+                    case 14:
+                        card.name = 'a';
+                        card.points = 11;
+                        break;
                 }
 
                 cards.push(card);
             }
-        }
+        });
+
         return cards;
     }
 
-    var printCard = function(cards, index, $to) {
+    function printCard(cards, index, $to) {
         var points = cards[index].points;
         var $template = $('<div class="card ' + cards[index].suit.color + '">' +
         '<div class="corners left_corner">' +
@@ -114,11 +129,11 @@
         return points;
     }
 
-    var randomIndex = function() {
+    function randomIndex() {
         return Math.floor(Math.random() * cards.length);
     }
 
-    var step = function(player) {
+    function step(player) {
         try {
             result[player] += printCard(cards, randomIndex(), $('.' + player));
             $('.' + player + ' .score').text(result[player]);
@@ -132,10 +147,21 @@
         }
     }
 
-    var cpu = function() {
+    function isWinner() {
+        return (
+            result['human'] <= 21 &&
+            (result['human'] > result['computer'] || result['computer'] > 21)
+        );
+    }
+
+    function cpu() {
         var timer = setInterval(function() {
             step('computer');
-            if(result['computer'] >= 20 || result['computer'] >= result['human']) clearInterval(timer);
+
+            if (result['computer'] >= 20 || result['computer'] >= result['human']) {
+                clearInterval(timer);
+                $(document.body).trigger('showMessage', isWinner());
+            };
         }, 500);
     }
 
