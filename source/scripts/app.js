@@ -1,3 +1,5 @@
+'use strict';
+
 (function() {
     //cards game
     //black jack
