@@ -26,6 +26,7 @@
     Card.prototype = new Suit();
 
     var gameInit = function() {
+        var $msg = $('.message');
         suits.push(new Suit('spades', 'black', '&spades;'));
         suits.push(new Suit('hearts', 'red', '&hearts;'));
         suits.push(new Suit('clubs', 'black', '&clubs;'));
@@ -36,6 +37,8 @@
         step('human');
         step('computer');
         step('human');
+
+        $msg.addClass('hide');
 
         $('.click').click(function() {
             step('human');
@@ -48,12 +51,18 @@
         });
 
         $('.restart').click(restart);
+
+        $(document.body).on('showMessage', function(e, isWinner) {
+            $msg.removeClass('hide');
+            $msg.find('p').text(isWinner ? 'You Won!' : 'You Loose!');
+        });
     }
 
     function restart() {
         for(var el in result) {
             result[el] = 0;
         }
+        $('.message').addClass('hide');
         $('body').find('.card').remove();
         $('.score').text(0);
         $('.click').show();
@@ -138,12 +147,20 @@
         }
     }
 
+    function isWinner() {
+        return (
+            result['human'] <= 21 &&
+            (result['human'] > result['computer'] || result['computer'] > 21)
+        );
+    }
+
     function cpu() {
         var timer = setInterval(function() {
             step('computer');
 
             if (result['computer'] >= 20 || result['computer'] >= result['human']) {
-                clearInterval(timer)
+                clearInterval(timer);
+                $(document.body).trigger('showMessage', isWinner());
             };
         }, 500);
     }
