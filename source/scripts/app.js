@@ -1,3 +1,5 @@
+'use strict';
+
 (function() {
     //cards game
     //black jack
@@ -56,6 +58,13 @@
             $msg.removeClass('hide');
             $msg.find('p').text(isWinner ? 'You Won!' : 'You Loose!');
         });
+    }
+
+    function isWinner() {
+        return (
+            result['human'] <= 21 &&
+            (result['human'] > result['computer'] || result['computer'] > 21)
+        );
     }
 
     function restart() {
@@ -141,17 +150,11 @@
             if(result[player] > 21) {
                 $('.click').hide();
                 $('.stop').hide();
+                $(document.body).trigger('showMessage', isWinner());
             }
         } catch (e) {
             cards = makeCards(suits);
         }
-    }
-
-    function isWinner() {
-        return (
-            result['human'] <= 21 &&
-            (result['human'] > result['computer'] || result['computer'] > 21)
-        );
     }
 
     function cpu() {
